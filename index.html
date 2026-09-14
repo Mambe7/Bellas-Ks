@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bellas KS">
+<link rel="manifest" href="manifest.json">
+<title>Bellas KS</title>
+<style>
+:root{--ink:#171717;--muted:#777;--bg:#f8f6f3;--card:#fff;--line:#ece9e5;--soft:#f1efec;--danger:#a33b3b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+button,input,select{font:inherit}.app{max-width:560px;margin:auto;min-height:100vh;padding-bottom:92px}.top{padding:24px 18px 12px;display:flex;align-items:center;gap:12px}.logo{width:54px;height:54px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}.brand{font-size:24px;font-weight:800;letter-spacing:.3px}.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.page{padding:0 16px}.hidden{display:none!important}.cards{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:10px 0}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.025)}.card.full{grid-column:1/-1}.label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.9px}.amount{font-size:25px;font-weight:800;margin-top:7px}.small{font-size:13px;color:var(--muted);margin-top:5px}.primary{border:0;border-radius:16px;background:var(--ink);color:#fff;padding:15px;width:100%;font-weight:750;cursor:pointer}.secondary{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:12px;width:100%;font-weight:700}.section-title{font-size:18px;font-weight:800;margin:22px 3px 11px}.row{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;gap:10px}.row-main{min-width:0}.row-title{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{font-size:12px;color:var(--muted);margin-top:4px}.income{font-weight:800}.expense{font-weight:800;color:var(--danger)}.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field{margin:11px 0}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.field input,.field select{width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:13px;font-size:16px;outline:none}.modal{position:fixed;inset:0;background:rgba(0,0,0,.42);display:none;align-items:flex-end;z-index:20}.sheet{width:100%;max-width:560px;margin:auto;background:var(--bg);border-radius:25px 25px 0 0;padding:18px 16px 28px;max-height:90vh;overflow:auto}.sheet-head{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#e9e7e4;border-radius:50%;width:36px;height:36px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.danger{color:var(--danger)!important}.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:9px 8px calc(9px + env(safe-area-inset-bottom));z-index:10}.nav button{border:0;background:none;color:#777;border-radius:13px;padding:9px 8px;flex:1;max-width:135px;font-size:12px;font-weight:700}.nav button.active{background:#efedeb;color:#111}.bar{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin-top:10px}.bar span{display:block;height:100%;background:#222;border-radius:99px}.empty{text-align:center;color:var(--muted);padding:25px 10px}.pill{display:inline-block;background:var(--soft);border-radius:99px;padding:5px 9px;font-size:11px;color:#666}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px}.stat b{display:block;font-size:16px;margin-top:4px}.mini-list{margin-top:8px}.delete{border:0;background:none;color:var(--danger);font-size:18px}.edit{border:0;background:none;font-size:17px}.toolbar{display:flex;gap:8px}.toolbar button{width:auto;padding:10px 12px}.notice{background:#f0eeeb;border:1px solid var(--line);padding:12px 13px;border-radius:15px;font-size:12px;color:#666;line-height:1.45}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+<img class="logo" src="icon-192.png" alt="Bellas KS">
+<div><div class="brand">BELLAS KS</div><div class="sub">Control del negocio</div></div>
+</header>
+
+<main>
+<section id="dashboard" class="page">
+<div class="cards">
+<div class="card full"><div class="label">Ingresos de hoy</div><div class="amount" id="todayIncome">$0</div><div class="small" id="todayCount">0 servicios</div></div>
+<div class="card"><div class="label">Esta semana</div><div class="amount" id="weekIncome">$0</div></div>
+<div class="card"><div class="label">Este mes</div><div class="amount" id="monthIncome">$0</div></div>
+<div class="card"><div class="label">Gastos del mes</div><div class="amount" id="monthExpense">$0</div></div>
+<div class="card"><div class="label">Ganancia del mes</div><div class="amount" id="monthProfit">$0</div></div>
+<div class="card full"><button class="primary" onclick="openEntry()">＋ Registrar movimiento</button></div>
+</div>
+<div class="section-title">Últimos movimientos</div><div id="recent"></div>
+</section>
+
+<section id="report" class="page hidden">
+<div class="section-title">Resumen</div>
+<div class="card"><div class="label">Mes seleccionado</div><div class="field"><input type="month" id="reportMonth" onchange="renderReport()"></div>
+<div class="stat-grid"><div class="stat"><span class="label">Ingresos</span><b id="repIncome">$0</b></div><div class="stat"><span class="label">Gastos</span><b id="repExpense">$0</b></div><div class="stat"><span class="label">Ganancia</span><b id="repProfit">$0</b></div></div></div>
+<div class="section-title">Por semana</div><div id="weekly"></div>
+<div class="section-title">Servicios más realizados</div><div id="topServices"></div>
+</section>
+
+<section id="history" class="page hidden">
+<div class="section-title">Historial</div>
+<div class="filters"><div class="field"><label>Desde</label><input type="date" id="from" onchange="renderHistory()"></div><div class="field"><label>Hasta</label><input type="date" id="to" onchange="renderHistory()"></div></div>
+<div class="toolbar"><button class="secondary" onclick="clearFilters()">Limpiar filtros</button><button class="secondary" onclick="exportData()">Exportar copia</button></div>
+<div id="historyList" style="margin-top:12px"></div>
+</section>
+
+<section id="settings" class="page hidden">
+<div class="section-title">Configuración</div>
+<div class="card">
+<div class="field"><label>Nombre del negocio</label><input value="Bellas KS" id="businessName"></div>
+<button class="primary" onclick="saveSettings()">Guardar configuración</button>
+</div>
+<div class="section-title">Servicios y precios</div>
+<div class="card">
+<div id="serviceConfig"></div>
+<div class="field"><label>Nuevo servicio</label><input id="newService" placeholder="Ej. Volumen ruso"></div>
+<div class="field"><label>Precio</label><input id="newPrice" type="number" placeholder="60000"></div>
+<button class="primary" onclick="addService()">＋ Agregar servicio</button>
+</div>
+<div class="section-title">Datos</div>
+<div class="card">
+<button class="secondary" onclick="exportData()">⬇️ Exportar respaldo</button><br><br>
+<button class="secondary" onclick="document.getElementById('importFile').click()">⬆️ Importar respaldo</button>
+<input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+<br><br><button class="secondary danger" onclick="resetAll()">Borrar todos los registros</button>
+</div>
+<div class="section-title">Información</div>
+<div class="notice">Esta versión guarda los datos en el dispositivo. Para que tú y tu novia vean y editen exactamente los mismos registros desde dos iPhone, hace falta conectar la app a una base de datos en la nube en la siguiente versión.</div>
+</section>
+</main>
+</div>
+
+<nav class="nav">
+<button class="active" onclick="showPage('dashboard',this)">🏠<br>Inicio</button>
+<button onclick="showPage('report',this)">📊<br>Reportes</button>
+<button onclick="showPage('history',this)">📋<br>Historial</button>
+<button onclick="showPage('settings',this)">⚙️<br>Ajustes</button>
+</nav>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeEntry()">
+<div class="sheet">
+<div class="sheet-head"><h2 id="modalTitle">Registrar ingreso</h2><button class="close" onclick="closeEntry()">✕</button></div>
+<div class="field"><label>Tipo</label><select id="entryType" onchange="toggleEntryType()"><option value="income">Servicio / ingreso</option><option value="expense">Gasto</option></select></div>
+<div class="field"><label>Fecha</label><input type="date" id="entryDate"></div>
+<div class="field" id="serviceField"><label>Servicio</label><select id="entryService"></select></div>
+<div class="field"><label>Descripción</label><input id="entryDescription" placeholder="Opcional"></div>
+<div class="field"><label>Valor (COP)</label><input id="entryAmount" type="number" min="0" step="1000" placeholder="60000"></div>
+<div class="actions"><button class="secondary" onclick="closeEntry()">Cancelar</button><button class="primary" onclick="saveEntry()">Guardar</button></div>
+</div></div>
+
+<script>
+const KEY='bellas_ks_v3', SET='bellas_ks_settings';
+let state=JSON.parse(localStorage.getItem(KEY)||'{"entries":[],"services":[{"name":"Extensión de pestañas","price":60000},{"name":"Diseño de cejas","price":25000},{"name":"Laminado de cejas","price":40000},{"name":"Lifting de pestañas","price":40000},{"name":"Depilación","price":20000}]}');
+let settings=JSON.parse(localStorage.getItem(SET)||'{"businessName":"Bellas KS"}');
+let editId=null;
+const money=n=>new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(Math.round(n||0));
+const today=()=>new Date().toISOString().slice(0,10);
+function dateObj(s){return new Date(s+'T12:00:00')}
+function monthKey(d){return d.slice(0,7)}
+function weekStart(s){let d=dateObj(s),day=d.getDay();d.setDate(d.getDate()-(day||7)+1);return d.toISOString().slice(0,10)}
+function saveState(){localStorage.setItem(KEY,JSON.stringify(state))}
+function render(){
+ const t=today(), m=monthKey(t), ws=weekStart(t);
+ const inc=a=>a.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0);
+ const exp=a=>a.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);
+ let td=state.entries.filter(x=>x.date===t), wk=state.entries.filter(x=>x.date>=ws&&x.date<=t), me=state.entries.filter(x=>x.date.startsWith(m));
+ todayIncome.textContent=money(inc(td));todayCount.textContent=td.filter(x=>x.type==='income').length+' servicios';
+ weekIncome.textContent=money(inc(wk));monthIncome.textContent=money(inc(me));monthExpense.textContent=money(exp(me));monthProfit.textContent=money(inc(me)-exp(me));
+ let sorted=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ recent.innerHTML=sorted.slice(0,8).map(entryHtml).join('')||'<div class="empty">Aún no hay movimientos.</div>';
+ reportMonth.value=reportMonth.value||m; renderReport(); renderHistory(); renderServiceConfig(); fillServices();
+}
+function entryHtml(x){
+ let sign=x.type==='income'?'+':'−', cls=x.type==='income'?'income':'expense';
+ let title=x.type==='income'?(x.service||'Ingreso'):(x.description||'Gasto');
+ return `<div class="row"><div class="row-main"><div class="row-title">${esc(title)}</div><div class="meta">${dateObj(x.date).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})}${x.description&&x.type==='income'?' · '+esc(x.description):''}</div></div><div><span class="${cls}">${sign}${money(x.amount)}</span><br><button class="edit" onclick="editEntry('${x.id}')">✏️</button><button class="delete" onclick="deleteEntry('${x.id}')">×</button></div></div>`;
+}
+function renderReport(){
+ let m=reportMonth.value||monthKey(today()), a=state.entries.filter(x=>x.date.startsWith(m)), inc=a.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0), ex=a.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);
+ repIncome.textContent=money(inc);repExpense.textContent=money(ex);repProfit.textContent=money(inc-ex);
+ let weeks={};a.forEach(x=>{let w=weekStart(x.date);weeks[w]=(weeks[w]||{i:0,e:0});weeks[w][x.type==='income'?'i':'e']+=x.amount});
+ weekly.innerHTML=Object.keys(weeks).sort().map(w=>`<div class="row"><span>Semana desde ${dateObj(w).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})}</span><b>${money(weeks[w].i-weeks[w].e)}</b></div>`).join('')||'<div class="empty">Sin datos para este mes.</div>';
+ let counts={};a.filter(x=>x.type==='income').forEach(x=>{let k=x.service||'Otro';counts[k]=(counts[k]||0)+1});let top=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+ topServices.innerHTML=top.map(([n,c])=>`<div class="row"><span>${esc(n)}</span><b>${c} ${c===1?'servicio':'servicios'}</b></div>`).join('')||'<div class="empty">Sin servicios.</div>';
+}
+function renderHistory(){
+ let a=[...state.entries].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id),f=from.value,toVal=to.value;if(f)a=a.filter(x=>x.date>=f);if(toVal)a=a.filter(x=>x.date<=toVal);
+ historyList.innerHTML=a.map(entryHtml).join('')||'<div class="empty">No hay movimientos con esos filtros.</div>';
+}
+function fillServices(){entryService.innerHTML=state.services.map((s,i)=>`<option value="${i}">${esc(s.name)} — ${money(s.price)}</option>`).join('')}
+function renderServiceConfig(){serviceConfig.innerHTML=state.services.map((s,i)=>`<div class="row"><span><b>${esc(s.name)}</b><br><span class="meta">${money(s.price)}</span></span><button class="delete" onclick="removeService(${i})">×</button></div>`).join('')}
+function openEntry(id=null){
+ editId=id;entryType.value='income';entryDate.value=today();entryDescription.value='';entryAmount.value='';
+ if(id){let x=state.entries.find(e=>e.id===id);if(!x)return;entryType.value=x.type;entryDate.value=x.date;entryDescription.value=x.description||'';entryAmount.value=x.amount;setTimeout(()=>{let i=state.services.findIndex(s=>s.name===x.service);if(i>=0)entryService.value=i},0)}
+ toggleEntryType();modalTitle.textContent=id?'Editar movimiento':'Registrar movimiento';modal.style.display='flex';
+}
+function toggleEntryType(){serviceField.style.display=entryType.value==='income'?'block':'none'}
+function closeEntry(){modal.style.display='none';editId=null}
+function saveEntry(){
+ let amount=Number(entryAmount.value);if(!amount)return alert('Ingresa un valor.');
+ let type=entryType.value, obj={id:editId||Date.now().toString(),type,date:entryDate.value,description:entryDescription.value.trim(),amount};
+ if(type==='income'){let s=state.services[Number(entryService.value)];obj.service=s?s.name:'Otro'}
+ if(editId){let i=state.entries.findIndex(e=>e.id===editId);state.entries[i]=obj}else state.entries.push(obj);
+ saveState();closeEntry();render();
+}
+function editEntry(id){openEntry(id)}
+function deleteEntry(id){if(confirm('¿Eliminar este movimiento?')){state.entries=state.entries.filter(x=>x.id!==id);saveState();render()}}
+function addService(){let n=newService.value.trim(),p=Number(newPrice.value);if(!n||!p)return alert('Completa servicio y precio.');state.services.push({name:n,price:p});saveState();newService.value='';newPrice.value='';render()}
+function removeService(i){if(state.services.length<=1)return alert('Debes conservar al menos un servicio.');if(confirm('¿Eliminar este servicio de la lista?')){state.services.splice(i,1);saveState();render()}}
+function saveSettings(){settings.businessName=businessName.value.trim()||'Bellas KS';localStorage.setItem(SET,JSON.stringify(settings));alert('Configuración guardada.')}
+function clearFilters(){from.value='';to.value='';renderHistory()}
+function exportData(){let blob=new Blob([JSON.stringify({state,settings},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bellas-ks-respaldo-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.state||!Array.isArray(x.state.entries))throw 0;state=x.state;settings=x.settings||settings;saveState();localStorage.setItem(SET,JSON.stringify(settings));render();alert('Respaldo importado correctamente.')}catch(_){alert('El archivo no es un respaldo válido de Bellas KS.')}};r.readAsText(f)}
+function resetAll(){if(confirm('Esto eliminará todos los registros de ingresos y gastos. ¿Continuar?')){state.entries=[];saveState();render()}}
+function showPage(id,b){['dashboard','report','history','settings'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+businessName.value=settings.businessName;render();
+</script>
+</body></html>
